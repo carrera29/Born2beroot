@@ -1,3 +1,4 @@
+
 #!/bin/bash
 arc=$(uname -a)
 # Num de nucleos fisicos
