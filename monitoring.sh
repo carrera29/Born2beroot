@@ -1,4 +1,3 @@
-
 #!/bin/bash
 arc=$(uname -a)
 # Num de nucleos fisicos
@@ -16,7 +15,7 @@ lb=$(who -b | awk '{print $4, $5}')
 # Si LVM está activo o no
 lvm=$(lsblk | grep "lvm" | awk '{if($1) {print "yes"; exit;} else {print "no"} }')
 # Num. de conexiones activas
-tcp=$(netstat -an | grep ESTABLISHED |  wc -l | awk)
+tcp=$(netstat -an | grep ESTABLISHED |  wc -l)
 # Num. de usuarios del servidor
 users=$(users | wc -w)
 # Dirección IPv4 del servidor y su MAC (Media Access Control)
@@ -26,7 +25,7 @@ mac=$(ip a | grep "link/ether" | awk '{print $2}')
 sudo=$(grep "COMMAND" /var/log/sudo/sudo.log | wc -l)
 wall "  Architecture: $arc
         CPU physical: $cpu
-        vCPU: $v_cpu
+        CPU: $v_cpu
         Memory Usage: $mem
         Disk Usage: $disk
         CPU load: $load
