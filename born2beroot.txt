@@ -1,0 +1,123 @@
+BORN2BEROOT
+
+Diferencia entre Centos y Debian
+- La infraestructura de administración de paquetes en Debian es simple y potente. 
+- El gestor de paquetes estándar es dpkg, y permite instalar, desinstalar, en fin, administrar paquetes .deb en el sistema operativo y tiene una gran cantidad de paquetes de instalación de fault
+- Es mas facil de instalar
+- Se puede actualizar con facilidad
+- Tiene una Interfaz Gráfica sencilla para el usuario
+
+Diferencia entre aptitude y apt
+- Aptitude es una versión mejorada de apt-get.
+- Aptitude instala por defecto las dependencias que están marcadas como «recommended», mientras apt-get sólo instala las dependencias «required».
+- Aptitude posee una interfaz gráfica a la que se accede escribiendo “aptitude”.
+- Las búsquedas «apt-cache search» suelen dar mejores resultados que las de «aptitude search».
+- Synaptic es el entorno gráfico del comando apt-get.
+
+AppArmor
+- Es un modulo de seguridad del Linux.
+- Permite al administrador del sistema restringir las capacidades de un programa. 
+- Este perfil puede ser creado manual o automáticamente.
+- Con AppArmor no importa en qué clase de sistema de ficheros estén montados los archivos ya que trabaja con las rutas de los archivos o URL.
+- Además de la especificación manual de perfiles, AppArmor incluye un modo de aprendizaje, en el que las violaciones del perfil son registradas pero no prevenidas.
+
+Comprobación de que UFW y SSH han sido iniciados
+	$ dpkg -l | grep UFW
+	$ dpkg -l | grep SSH
+
+Mirar sistema operativo
+	$uname -a
+
+User
+Comprobar que tiene un usuario con tu login y que pertenece a los grupos “sudo” y “user42”
+	$ getent group sudo
+	$ getent group user42
+Crear usuario y mostrar archivo donde cambiar las normas para los usuarios
+	$ adduser <nombre>
+	$ visudo 
+Crear grupo y asignar usuario a este y comprobar que es correcto
+	$ addgroup <nombre>
+	$ adduser <usuario> <grupo>
+	$ getent group <grupo>
+
+Ventajas de la política utilizada para la password
+Ventajas y desventajas de su implementación
+
+Hostname y particiones
+Modificar el hostname
+	$ sudo nano etc/hostname
+	$ reboot
+Ver particiones
+	$lsblk
+Comprueba el ultimo cambio de contraseña, cuando caduca, etc
+	$ chage -l <usuario>
+
+LVM
+* Volúmenes físicos (PV): Son las particiones del disco duro con sistema de archivos LVM.
+* Volúmenes lógicos (LV): es el equivalente a una partición en un sistema tradicional. El LV es visible como un dispositivo estándar de bloques, por lo que puede contener un sistema de archivos (por ejemplo /home)
+* Grupos de volúmenes (VG): es el “universo” que contiene nuestros volúmenes lógicos (LV) y nuestros volúmenes físicos (PV).  Mientras un PV no se añada al VG, no podemos comenzar a usarlo.
+
+SUDO
+	$ dpkg -l | grep sudo 
+	$ adduser <usuario> sudo
+1. user ALL=(ALL:ALL) ALL: en este se indica que la regla se aplica a cualquier anfitrión (o host).
+2. user ALL=(ALL:ALL) ALL: "user" podrá usar comandos de cualquier usuario.
+3. user ALL=(ALL:ALL) ALL: si el anterior "ALL" permitía usar comandos de usuarios, éste lo hará de grupos.
+4. user ALL=(ALL:ALL) ALL: las reglas se aplican a todos los comandos.
+
+
+SSH
+Comprobar estado de activación y puerto SSH
+	$ sudo systemctl status ssh 
+Comprobar el puerto
+	$ sudo grep Port /etc/ssh/sshd_config
+
+UFW
+Comprobar los puertos abiertos
+	$ sudo ufo status numbered
+Conectarse a través de la terminal 
+	$ ssh <username>@localhost -p 4242
+
+PASSWORD
+Esto es lo que cada uno de los parámetros disponibles hace:
+* try_first_pass = número de veces que los usuarios pueden intentar establecer una buena contraseña antes de que el comando passwd aborte
+* minlen = longitud de la contraseña Veremos una explicación más adelante.
+* lcredit = define el número mínimo de letras MINUSCULAS necesarias
+* ucredit = establece el número mínimo de letras MAYUSCULAS requeridas
+* dcredit = establece el número mínimo de DIGITOS necesarios
+* ocredit = establece el número mínimo otros caracteres necesarios
+* difok = número de caracteres que deben ser diferentes de la contraseña anterior
+=-num. Quiere decir que debe haber haber, al menos, ese numero de caracteres
+
+For existing users
+To set maximum number of days between password change:
+	$ sudo chage -M <days> <username>
+To set minimum number of days between password change, run:
+	$ sudo chage -m <days> <username>
+To set warning before password expires, run:
+	$ sudo chage -W <days> <username>
+
+env_reset	Es el reinicio de las variables de entorno.
+mail_badpass	Enviar correo si la autentificación de usuario falla.
+secure_path	Muestra las direcciones que guarda la variable PATH.
+
+Expiración de password
+	$ sudo nano /etc/login.defs
+
+Configuración de Sudoers Group
+ 	$ sudo nano etc/sudoers o $ sudo visudo
+
+Monitoring
+Cron 
+Es un Daemon Clock:
+- Daemon es un programa que corre constantemente y que se programa para dar un servicio periódico al sistema. 
+- Cron viene del nombre del dios griego Cronos. 
+- Así pues, permite la ejecución automática de comandos, de un script, que es una sucesión de comandos, o de un programa, en un intervalo e tiempo definido. 
+- Corre automáticamente una vez se inicializa. 
+- Despierta cada minuto y examina si tiene tareas que realizar. 
+- Esta lista de tareas es llamada “cron table” o “crontab”.
+
+Para cambiar el tiempo de ejecución del script
+	$ sudo crontab -u root -e
+	Add at end as follows: (*/10 means every 10 mins the script will show)
+	*/10 * * * * /usr/local/bin/monitoring.sh
